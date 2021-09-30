@@ -7,5 +7,24 @@ Function.prototype.myThrottle = function(interval) {
         // false after interval ms
         // any invocation within this interval will skip the if 
         // statement and do nothing
+        if (!tooSoon) {
+            tooSoon = true;
+            setTimeout(() => tooSoon = false, interval);
+            this(...args);
+        }
+    }   
+}
+
+Function.prototype.myDebounce = function(interval) {
+    let timeout;
+
+    return (...args) => {
+        const fnCall = () => {
+            timeout = null;
+            this(...args);
+        }
+
+        clearTimeout(timeout);
+        timeout = setTimeout(fnCall, interval);
     }
 }
